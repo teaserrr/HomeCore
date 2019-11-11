@@ -8,12 +8,12 @@ namespace HC.Core.Devices
     {
 		public const string DataSourceId = "dataSource1";
 
-		private DataSource _dataSource;
+		private IDataSource _dataSource;
 
-        public OnOffSwitch(string id, IDataProvider dataProvider) 
+        public OnOffSwitch(string id, IDataProvider dataProvider, IDataSourceFactory dataSourceFactory) 
             : base(id)
         {
-            _dataSource = new DataSource($"{id}.{DataSourceId}", dataProvider);
+            _dataSource = dataSourceFactory.Create(id, DataSourceId, dataProvider);
         }
 
         public OnOffData GetCurrentState()

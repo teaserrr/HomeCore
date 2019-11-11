@@ -1,8 +1,8 @@
 using System;
 using Xunit;
-using HC.Core.Design;
 using HC.Core.DataTypes;
 using HC.Core.Devices;
+using HC.Core.Factories;
 using HC.Core.Test.TestEntities;
 using FluentAssertions;
 
@@ -20,7 +20,7 @@ namespace HC.Core.Test.Devices
         public WhenReadingOnOffSwitch()
         {
             _dataProvider = new TestDataProvider();
-            _testSensor = new OnOffSwitch(SensorId, _dataProvider);
+            _testSensor = new OnOffSwitch(SensorId, _dataProvider, new DataSourceFactory());
         }
 
         public OnOffData GetCurrentState()
