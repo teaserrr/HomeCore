@@ -3,12 +3,12 @@ using System.Linq;
 using HC.Core.Design;
 using HC.Core.DataTypes;
 
-namespace HC.Core
+namespace HC.Core.Logic
 {
-	public class DataSource
+	public class DataSource : IDataSource
 	{
-		private AbstractData currentData;
-		private AbstractData previousData;
+		private IData currentData;
+		private IData previousData;
 
 		public string Id { get; private set; }
 
@@ -18,11 +18,11 @@ namespace HC.Core
 			dataProvider.RegisterDataConsumer(id, UpdateData);
 		}
 
-		public AbstractData GetCurrentData() => currentData;
+		public IData GetCurrentData() => currentData;
 
-		public AbstractData GetPreviousData() => previousData;
+		public IData GetPreviousData() => previousData;
 
-		private void UpdateData(AbstractData newData)
+		private void UpdateData(IData newData)
 		{
 			if (Equals(currentData, newData))
 				return;

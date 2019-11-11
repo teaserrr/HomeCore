@@ -2,28 +2,30 @@ using System;
 
 namespace HC.Core.DataTypes
 {
-	public class IntegerData : AbstractData
+	public class IntegerData : AbstractData<long?>
 	{
-		private Int64? data;
-		
-		public IntegerData(Int64 value) => data = value;
+		public IntegerData() : base() {}
 
-		public override string ToString() 
-		{
-			return data?.ToString() ?? "<NULL>";
-		}
+		public IntegerData(long? value) : base(value) {}
+
+		public static implicit operator IntegerData(long value) => new IntegerData(value);
+		public static implicit operator IntegerData(long? value) => new IntegerData(value);
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-			
-			if (!(obj is IntegerData))
-				return false;
+			if (base.Equals(obj))
+				return true;
 
-			return Equals(data, ((IntegerData)obj).data);
+			if (obj is int)
+				return Equals(Value, (long?)Convert.ToInt64(obj));
+				
+			if (obj is double)
+				return Equals(Value, (long?)Convert.ToInt64(obj));
+			
+			return false;
 		}
 
-		public override int GetHashCode() => data.GetHashCode();
+		// suppress warning
+		public override int GetHashCode() => base.GetHashCode();
 	}
 }

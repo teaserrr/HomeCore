@@ -7,19 +7,19 @@ namespace HC.Core.Test.TestEntities
 {
 	public class TestDataProvider : IDataProvider
 	{
-		private IDictionary<string, Action<AbstractData>> dataConsumers;
+		private IDictionary<string, Action<IData>> dataConsumers;
 
 		public TestDataProvider()
 		{
-			dataConsumers = new Dictionary<string, Action<AbstractData>>();
+			dataConsumers = new Dictionary<string, Action<IData>>();
 		}
 
-		public void RegisterDataConsumer(string id, Action<AbstractData> dataConsumer)
+		public void RegisterDataConsumer(string id, Action<IData> dataConsumer)
 		{
 			dataConsumers.Add(id, dataConsumer);
 		}
 
-		public void UpdateData(string id, AbstractData data)
+		public void UpdateData(string id, IData data)
 		{
 			dataConsumers[id].Invoke(data);
 		}

@@ -30,7 +30,16 @@ namespace HC.Core.Test
         }
 
         [Fact]
-        public void WithDataSet_ResultShouldBeCorrect()
+        public void WithNullData_ResultShouldBeCorrect()
+        {
+            _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataSourceId}", new IntegerData());
+            var data = _testSensor.GetData();
+
+            data.Should().Be(new IntegerData());
+        }
+
+        [Fact]
+        public void WithValidData_ResultShouldBeCorrect()
         {
             _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataSourceId}", new IntegerData(42));
             var data = _testSensor.GetData();

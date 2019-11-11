@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using HC.Core.DataTypes;
+using HC.Core.Design;
 
 namespace HC.Core
 {
@@ -7,9 +6,9 @@ namespace HC.Core
 	{
 		public string Id { get; private set; }
 
-		public AbstractData Data { get; private set; }
+		public IData Data { get; private set; }
 
-		public Command(string id, AbstractData data) 
+		public Command(string id, IData data) 
 		{
 			Id = id;
 			Data = data;
