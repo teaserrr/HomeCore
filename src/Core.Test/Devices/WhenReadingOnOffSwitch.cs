@@ -25,7 +25,7 @@ namespace HC.Core.Test.Devices
 
         public OnOffData GetCurrentState()
         {
-            return _testSensor.GetCurrentState();
+            return _testSensor.GetOnOffState();
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace HC.Core.Test.Devices
         [Fact]
         public void WithValidData_ResultShouldBeCorrect()
         {
-            _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataSourceId}", OnOffData.OFF);
+            _dataProvider.UpdateData($"{SensorId}.{OnOffSwitch.DataSourceId}", OnOffData.OFF);
             var data = GetCurrentState();
 
             data.Should().Be(OnOffData.OFF);

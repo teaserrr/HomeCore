@@ -1,5 +1,4 @@
 using System;
-using HC.Core.DataTypes;
 
 namespace HC.Core.Design
 {
