@@ -1,12 +1,12 @@
 namespace HC.Core.Design
 {
-    public interface IDataSource
-    {
-        string Id { get; }
-        
-        IData GetCurrentData();
+  public interface IDataSource
+  {
+    string Id { get; }
 
-		IData GetPreviousData();
+    IData GetCurrentData();
 
-    }
+    IData GetPreviousData();
+
+  }
 }

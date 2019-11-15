@@ -7,44 +7,44 @@ using FluentAssertions;
 
 namespace HC.Core.Test
 {
-    public class WhenReadingBasicData
+  public class WhenReadingBasicData
+  {
+    public const string SensorId = "testSensor";
+
+    private TestDataProvider _dataProvider;
+
+    private TestSensor _testSensor;
+
+    public WhenReadingBasicData()
     {
-        public const string SensorId = "testSensor";
-
-        private TestDataProvider _dataProvider;
-
-        private TestSensor _testSensor;
-
-        public WhenReadingBasicData()
-        {
-            _dataProvider = new TestDataProvider();
-            _testSensor = new TestSensor(SensorId, _dataProvider);
-        }
-
-        [Fact]
-        public void WithNoData_ResultShouldbeNull()
-        {
-            var data = _testSensor.GetData();
-
-            data.Should().BeNull();
-        }
-
-        [Fact]
-        public void WithNullData_ResultShouldBeCorrect()
-        {
-            _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataSourceId}", new IntegerData());
-            var data = _testSensor.GetData();
-
-            data.Should().Be(new IntegerData());
-        }
-
-        [Fact]
-        public void WithValidData_ResultShouldBeCorrect()
-        {
-            _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataSourceId}", new IntegerData(42));
-            var data = _testSensor.GetData();
-
-            data.Should().Be(new IntegerData(42));
-        }
+      _dataProvider = new TestDataProvider();
+      _testSensor = new TestSensor(SensorId, _dataProvider);
     }
+
+    [Fact]
+    public void WithNoData_ResultShouldbeNull()
+    {
+      var data = _testSensor.GetData();
+
+      data.Should().BeNull();
+    }
+
+    [Fact]
+    public void WithNullData_ResultShouldBeCorrect()
+    {
+      _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataSourceId}", new IntegerData());
+      var data = _testSensor.GetData();
+
+      data.Should().Be(new IntegerData());
+    }
+
+    [Fact]
+    public void WithValidData_ResultShouldBeCorrect()
+    {
+      _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataSourceId}", new IntegerData(42));
+      var data = _testSensor.GetData();
+
+      data.Should().Be(new IntegerData(42));
+    }
+  }
 }

@@ -1,6 +1,6 @@
 namespace HC.Core.Design
 {
-    public interface IData
-    {         
-    }
+  public interface IData
+  {
+  }
 }
