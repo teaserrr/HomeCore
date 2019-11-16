@@ -1,6 +1,6 @@
 ﻿using HC.Core.Design;
 
-namespace HC.Core.Test.TestEntities
+namespace HC.Core.Test
 {
   class TestCommandConsumer : ICommandConsumer
   {

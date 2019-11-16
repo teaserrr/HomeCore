@@ -1,5 +1,7 @@
 namespace HC.Core.Design
 {
+  public delegate void DataUpdatedHandler(IDataSource dataSource, IData newData);
+
   public interface IDataSource
   {
     string Id { get; }
@@ -8,5 +10,6 @@ namespace HC.Core.Design
 
     IData GetPreviousData();
 
+    event DataUpdatedHandler DataUpdated;
   }
 }

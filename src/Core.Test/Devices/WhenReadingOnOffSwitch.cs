@@ -3,7 +3,6 @@ using Xunit;
 using HC.Core.DataTypes;
 using HC.Core.Devices;
 using HC.Core.Factories;
-using HC.Core.Test.TestEntities;
 using FluentAssertions;
 using Xunit.Abstractions;
 

@@ -5,7 +5,7 @@ namespace HC.Core.Logic
 {
   public class CommandSink : ICommandSink
   {
-    public ILog _logger;
+    private readonly ILog _logger;
 
     private readonly ICommandConsumer _commandConsumer;
 

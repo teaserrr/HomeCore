@@ -5,17 +5,19 @@ using HC.Core.Design;
 
 namespace HC.Core.Devices
 {
-  public abstract class AbstractDevice
+  public abstract class AbstractDevice : IDevice
   {
     private readonly ILog _logger;
-    private IList<IDataSource> _dataSources;
-    private IList<ICommandSink> _commandSinks;
-    private IDataSourceFactory _dataSourceFactory;
+    private readonly IList<IDataSource> _dataSources;
+    private readonly IList<ICommandSink> _commandSinks;
+    private readonly IDataSourceFactory _dataSourceFactory;
     private readonly ICommandSinkFactory _commandSinkFactory;
 
     public string Id { get; private set; }
 
     public IEnumerable<IDataSource> DataSources => _dataSources.Skip(0); // creates a new enumerable so it cannot be cast back to a list
+
+    public IEnumerable<ICommandSink> CommandSinks => _commandSinks.Skip(0);
 
     protected AbstractDevice(string id, ILog logger, IDataSourceFactory dataSourceFactory)
     {
@@ -31,14 +33,14 @@ namespace HC.Core.Devices
       _commandSinkFactory = commandSinkFactory;
       _commandSinks = new List<ICommandSink>();
     }
-    
+
     protected void AddDataSource(string dataId, IDataProvider dataProvider)
     {
       var dataSource = _dataSourceFactory.Create(GetDataSourceId(Id, dataId), dataProvider, _logger);
       _dataSources.Add(dataSource);
     }
 
-    protected IDataSource GetDataSource(string dataId)
+    public IDataSource GetDataSource(string dataId)
     {
       return _dataSources.Single(ds => ds.Id.Equals(GetDataSourceId(Id, dataId)));
     }
@@ -49,7 +51,7 @@ namespace HC.Core.Devices
       _commandSinks.Add(commandSink);
     }
 
-    private ICommandSink GetCommandSink(string commandId)
+    public ICommandSink GetCommandSink(string commandId)
     {
       return _commandSinks.Single(cs => cs.Id.Equals(GetCommandSinkId(Id, commandId)));
     }

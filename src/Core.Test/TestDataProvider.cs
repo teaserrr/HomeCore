@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using HC.Core.Design;
-using HC.Core.DataTypes;
 
-namespace HC.Core.Test.TestEntities
+namespace HC.Core.Test
 {
 	public class TestDataProvider : IDataProvider
 	{

@@ -1,17 +1,15 @@
-using System.Collections.Generic;
-using System.Linq;
-using System;
 using HC.Core.Design;
-using HC.Core.DataTypes;
 
 namespace HC.Core.Logic
 {
-	public class DataSource : IDataSource
+  public class DataSource : IDataSource
 	{
 		private IData _currentData;
 		private IData _previousData;
 
     private readonly ILog _logger;
+
+    public event DataUpdatedHandler DataUpdated;
 
     public string Id { get; private set; }
 
@@ -35,6 +33,12 @@ namespace HC.Core.Logic
 			_currentData = newData;
 
       _logger.Notice($"{this} data updated from {_previousData} to {_currentData}");
+      OnDataUpdated(newData);
+    }
+
+    private void OnDataUpdated(IData data)
+    {
+      DataUpdated?.Invoke(this, data);
     }
 
     public override string ToString()
