@@ -10,10 +10,10 @@ namespace HC.Core.Devices
 
     private IDataSource _stateDataSource;
 
-    public SwitchableLight(string id, IDataProvider dataProvider, ICommandSink commandSink, IDataSourceFactory dataSourceFactory)
-    : base(id, commandSink)
+    public SwitchableLight(string id, ILog logger, IDataProvider dataProvider, ICommandSink commandSink, IDataSourceFactory dataSourceFactory)
+    : base(id, logger, commandSink)
     {
-      _stateDataSource = dataSourceFactory.Create(id, StateDataSourceId, dataProvider);
+      _stateDataSource = dataSourceFactory.Create(id, StateDataSourceId, dataProvider, logger);
     }
 
     public OnOffData GetOnOffState()

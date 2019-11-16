@@ -7,6 +7,7 @@ using HC.Core.Devices;
 using HC.Core.Factories;
 using HC.Core.Test.TestEntities;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace HC.Core.Test.Devices
 {
@@ -16,10 +17,10 @@ namespace HC.Core.Test.Devices
 
     private SwitchableLight _testActor;
 
-    public WhenSendingSwitchCommand()
+    public WhenSendingSwitchCommand(ITestOutputHelper testOutputHelper)
     {
       _testCommandSink = new TestCommandSink();
-      _testActor = new SwitchableLight("testLight", new TestDataProvider(), _testCommandSink, new DataSourceFactory());
+      _testActor = new SwitchableLight("testLight", new TestLogger(testOutputHelper), new TestDataProvider(), _testCommandSink, new DataSourceFactory());
     }
 
     [Fact]

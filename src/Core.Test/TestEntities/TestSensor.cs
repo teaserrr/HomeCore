@@ -13,10 +13,10 @@ namespace HC.Core.Test.TestEntities
 
 		private DataSource numberDataSource;
 
-		public TestSensor(string id, IDataProvider dataProvider)
-			: base(id)
+		public TestSensor(string id, ILog logger, IDataProvider dataProvider)
+			: base(id, logger)
 		{
-			numberDataSource = new DataSource($"{id}.{DataSourceId}", dataProvider); 
+			numberDataSource = new DataSource($"{id}.{DataSourceId}", logger, dataProvider); 
 		}
 
 		public IntegerData GetData()

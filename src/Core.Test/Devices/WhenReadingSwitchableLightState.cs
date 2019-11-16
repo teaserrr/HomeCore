@@ -5,6 +5,7 @@ using HC.Core.Devices;
 using HC.Core.Factories;
 using HC.Core.Test.TestEntities;
 using FluentAssertions;
+using Xunit.Abstractions;
 
 namespace HC.Core.Test.Devices
 {
@@ -17,10 +18,10 @@ namespace HC.Core.Test.Devices
 
     private SwitchableLight _testDevice;
 
-    public WhenReadingSwitchableLightState()
+    public WhenReadingSwitchableLightState(ITestOutputHelper testOutputHelper)
     {
       _dataProvider = new TestDataProvider();
-      _testDevice = new SwitchableLight(DeviceId, _dataProvider, new TestCommandSink(), new DataSourceFactory());
+      _testDevice = new SwitchableLight(DeviceId, new TestLogger(testOutputHelper), _dataProvider, new TestCommandSink(), new DataSourceFactory());
     }
 
     public OnOffData GetCurrentState()

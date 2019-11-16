@@ -9,10 +9,10 @@ namespace HC.Core.Devices
 
 	  private IDataSource _dataSource;
 
-    public OnOffSwitch(string id, IDataProvider dataProvider, IDataSourceFactory dataSourceFactory) 
-        : base(id)
+    public OnOffSwitch(string id, ILog logger, IDataProvider dataProvider, IDataSourceFactory dataSourceFactory) 
+        : base(id, logger)
     {
-      _dataSource = dataSourceFactory.Create(id, DataSourceId, dataProvider);
+      _dataSource = dataSourceFactory.Create(id, DataSourceId, dataProvider, logger);
     }
 
     public OnOffData GetOnOffState()

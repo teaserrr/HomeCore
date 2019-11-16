@@ -5,6 +5,7 @@ using HC.Core.Devices;
 using HC.Core.Factories;
 using HC.Core.Test.TestEntities;
 using FluentAssertions;
+using Xunit.Abstractions;
 
 namespace HC.Core.Test.Devices
 {
@@ -17,10 +18,10 @@ namespace HC.Core.Test.Devices
 
     private OnOffSwitch _testSensor;
 
-    public WhenReadingOnOffSwitch()
+    public WhenReadingOnOffSwitch(ITestOutputHelper testOutputHelper)
     {
       _dataProvider = new TestDataProvider();
-      _testSensor = new OnOffSwitch(SensorId, _dataProvider, new DataSourceFactory());
+      _testSensor = new OnOffSwitch(SensorId, new TestLogger(testOutputHelper), _dataProvider, new DataSourceFactory());
     }
 
     public OnOffData GetCurrentState()

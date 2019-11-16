@@ -5,9 +5,9 @@ namespace HC.Core.Factories
 {
   public class DataSourceFactory : IDataSourceFactory
   {
-    public IDataSource Create(string deviceId, string dataSourceId, IDataProvider dataProvider)
+    public IDataSource Create(string deviceId, string dataSourceId, IDataProvider dataProvider, ILog logger)
     {
-      return new DataSource(GetDataSourceId(deviceId, dataSourceId), dataProvider);
+      return new DataSource(GetDataSourceId(deviceId, dataSourceId), logger, dataProvider);
     }
 
     protected string GetDataSourceId(string deviceId, string dataSourceId)

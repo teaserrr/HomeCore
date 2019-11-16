@@ -8,27 +8,38 @@ namespace HC.Core.Logic
 {
 	public class DataSource : IDataSource
 	{
-		private IData currentData;
-		private IData previousData;
+		private IData _currentData;
+		private IData _previousData;
 
-		public string Id { get; private set; }
+    private readonly ILog _logger;
 
-		public DataSource(string id, IDataProvider dataProvider) 
+    public string Id { get; private set; }
+
+		public DataSource(string id, ILog logger, IDataProvider dataProvider) 
 		{ 
 			Id = id;
-			dataProvider.RegisterDataConsumer(id, UpdateData);
+      _logger = logger;
+      dataProvider.RegisterDataConsumer(id, UpdateData);
 		}
 
-		public IData GetCurrentData() => currentData;
+		public IData GetCurrentData() => _currentData;
 
-		public IData GetPreviousData() => previousData;
+		public IData GetPreviousData() => _previousData;
 
 		private void UpdateData(IData newData)
 		{
-			if (Equals(currentData, newData))
+			if (Equals(_currentData, newData))
 				return;
-			previousData = currentData;
-			currentData = newData;
-		}
-	}
+
+      _previousData = _currentData;
+			_currentData = newData;
+
+      _logger.Notice($"{this} data updated from {_previousData} to {_currentData}");
+    }
+
+    public override string ToString()
+    {
+      return $"DataSource [Id={Id}]";
+    }
+  }
 }
