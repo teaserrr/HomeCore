@@ -1,10 +1,10 @@
 using System;
 using Xunit;
-using HC.Core.Design;
 using HC.Core.DataTypes;
 using HC.Core.Test.TestEntities;
 using FluentAssertions;
 using Xunit.Abstractions;
+using HC.Core.Factories;
 
 namespace HC.Core.Test
 {
@@ -19,7 +19,7 @@ namespace HC.Core.Test
     public WhenReadingBasicData(ITestOutputHelper testOutputHelper)
     {
       _dataProvider = new TestDataProvider();
-      _testSensor = new TestSensor(SensorId, new TestLogger(testOutputHelper), _dataProvider);
+      _testSensor = new TestSensor(SensorId, new TestLogger(testOutputHelper), _dataProvider, new DataSourceFactory());
     }
 
     [Fact]
