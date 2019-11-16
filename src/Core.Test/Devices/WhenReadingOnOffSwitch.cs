@@ -40,7 +40,7 @@ namespace HC.Core.Test.Devices
     [Fact]
     public void WithNullData_ResultShouldNotBeValid()
     {
-      _dataProvider.UpdateData($"{SensorId}.{OnOffSwitch.DataSourceId}", new OnOffData());
+      _dataProvider.UpdateData($"{SensorId}.{OnOffSwitch.DataId}", new OnOffData());
       var data = GetCurrentState();
 
       data.IsValid().Should().BeFalse();
@@ -49,7 +49,7 @@ namespace HC.Core.Test.Devices
     [Fact]
     public void WithValidData_ResultShouldBeCorrect()
     {
-      _dataProvider.UpdateData($"{SensorId}.{OnOffSwitch.DataSourceId}", OnOffData.OFF);
+      _dataProvider.UpdateData($"{SensorId}.{OnOffSwitch.DataId}", OnOffData.OFF);
       var data = GetCurrentState();
 
       data.Should().Be(OnOffData.OFF);

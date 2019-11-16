@@ -33,7 +33,7 @@ namespace HC.Core.Test
     [Fact]
     public void WithNullData_ResultShouldBeCorrect()
     {
-      _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataSourceId}", new IntegerData());
+      _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataId}", new IntegerData());
       var data = _testSensor.GetData();
 
       data.Should().Be(new IntegerData());
@@ -42,7 +42,7 @@ namespace HC.Core.Test
     [Fact]
     public void WithValidData_ResultShouldBeCorrect()
     {
-      _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataSourceId}", new IntegerData(42));
+      _dataProvider.UpdateData($"{SensorId}.{TestSensor.DataId}", new IntegerData(42));
       var data = _testSensor.GetData();
 
       data.Should().Be(new IntegerData(42));

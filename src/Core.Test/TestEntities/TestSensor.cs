@@ -8,17 +8,17 @@ namespace HC.Core.Test.TestEntities
 {
 	public class TestSensor : AbstractDevice
 	{
-		public const string DataSourceId = "dataSource1";
+		public const string DataId = "testData";
     
 		public TestSensor(string id, ILog logger, IDataProvider dataProvider, IDataSourceFactory dataSourceFactory)
 			: base(id, logger, dataSourceFactory)
     {
-      AddDataSource(DataSourceId, dataProvider);
+      AddDataSource(DataId, dataProvider);
     }
 
 		public IntegerData GetData()
     {
-      return GetDataSource(DataSourceId).GetCurrentData() as IntegerData;
+      return GetDataSource(DataId).GetCurrentData() as IntegerData;
 		}
 
 	}

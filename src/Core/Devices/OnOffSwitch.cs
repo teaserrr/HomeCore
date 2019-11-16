@@ -5,17 +5,17 @@ namespace HC.Core.Devices
 {
   public class OnOffSwitch : AbstractDevice
   {
-	  public const string DataSourceId = "switchDataSource";
+	  public const string DataId = "switchData";
     
     public OnOffSwitch(string id, ILog logger, IDataProvider dataProvider, IDataSourceFactory dataSourceFactory) 
         : base(id, logger, dataSourceFactory)
     {
-      AddDataSource(DataSourceId, dataProvider);
+      AddDataSource(DataId, dataProvider);
     }
 
     public OnOffData GetOnOffState()
     {
-      return GetDataSource(DataSourceId).GetCurrentData() as OnOffData;
+      return GetDataSource(DataId).GetCurrentData() as OnOffData;
     }
   }
 }
