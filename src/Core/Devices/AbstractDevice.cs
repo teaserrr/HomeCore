@@ -7,10 +7,11 @@ namespace HC.Core.Devices
 {
   public abstract class AbstractDevice
   {
-    private readonly ICommandSink _commandSink;
     private readonly ILog _logger;
     private IList<IDataSource> _dataSources;
+    private IList<ICommandSink> _commandSinks;
     private IDataSourceFactory _dataSourceFactory;
+    private readonly ICommandSinkFactory _commandSinkFactory;
 
     public string Id { get; private set; }
 
@@ -24,35 +25,51 @@ namespace HC.Core.Devices
       _dataSources = new List<IDataSource>();
     }
 
-    protected AbstractDevice(string id, ILog logger, ICommandSink commandSink, IDataSourceFactory dataSourceFactory)
+    protected AbstractDevice(string id, ILog logger, IDataSourceFactory dataSourceFactory, ICommandSinkFactory commandSinkFactory)
       : this(id, logger, dataSourceFactory)
     {
-      _commandSink = commandSink;
+      _commandSinkFactory = commandSinkFactory;
+      _commandSinks = new List<ICommandSink>();
     }
     
-    protected void AddDataSource(string dataSourceId, IDataProvider dataProvider)
+    protected void AddDataSource(string dataId, IDataProvider dataProvider)
     {
-      var dataSource = _dataSourceFactory.Create(GetDataSourceId(Id, dataSourceId), dataProvider, _logger);
+      var dataSource = _dataSourceFactory.Create(GetDataSourceId(Id, dataId), dataProvider, _logger);
       _dataSources.Add(dataSource);
     }
 
-    protected IDataSource GetDataSource(string dataSourceId)
+    protected IDataSource GetDataSource(string dataId)
     {
-      return _dataSources.Single(ds => ds.Id.Equals(GetDataSourceId(Id, dataSourceId)));
+      return _dataSources.Single(ds => ds.Id.Equals(GetDataSourceId(Id, dataId)));
     }
 
-    protected void ProcessCommand(Command command)
+    protected void AddCommandSink(string commandId, ICommandConsumer commandConsumer)
     {
-      if (_commandSink == null)
-        throw new InvalidOperationException("Cannot process commands when commandSink is not set");
+      var commandSink = _commandSinkFactory.Create(GetCommandSinkId(Id, commandId), _logger, commandConsumer);
+      _commandSinks.Add(commandSink);
+    }
 
-      _logger.Notice($"{this} Processing command {command}");
-      _commandSink.ProcessCommand(command);
+    private ICommandSink GetCommandSink(string commandId)
+    {
+      return _commandSinks.Single(cs => cs.Id.Equals(GetCommandSinkId(Id, commandId)));
+    }
+
+    protected void ProcessCommand(string commandId, IData data)
+    {
+      if (_commandSinks == null)
+        throw new InvalidOperationException("Processing commands not supported by this device.");
+
+      GetCommandSink(commandId).ProcessCommand(data);
     }
 
     protected string GetDataSourceId(string deviceId, string dataSourceId)
     {
       return $"{deviceId}.{dataSourceId}";
+    }
+
+    protected string GetCommandSinkId(string deviceId, string commandId)
+    {
+      return $"{deviceId}.{commandId}";
     }
 
     public override string ToString()

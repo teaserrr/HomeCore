@@ -21,7 +21,7 @@ namespace HC.Core.Test.Devices
     public WhenReadingSwitchableLightState(ITestOutputHelper testOutputHelper)
     {
       _dataProvider = new TestDataProvider();
-      _testDevice = new SwitchableLight(DeviceId, new TestLogger(testOutputHelper), _dataProvider, new TestCommandSink(), new DataSourceFactory());
+      _testDevice = new SwitchableLight(DeviceId, new TestLogger(testOutputHelper), _dataProvider, new DataSourceFactory(), new TestCommandConsumer(), new CommandSinkFactory());
     }
 
     public OnOffData GetCurrentState()

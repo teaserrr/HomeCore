@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentAssertions;
+﻿using FluentAssertions;
 using HC.Core.DataTypes;
 using HC.Core.Devices;
 using HC.Core.Factories;
@@ -13,31 +10,33 @@ namespace HC.Core.Test.Devices
 {
   public class WhenSendingSwitchCommand
   {
-    private TestCommandSink _testCommandSink;
+    public const string DeviceId = "testDevice";
 
-    private SwitchableLight _testActor;
+    private TestCommandConsumer _testCommandConsumer;
+
+    private SwitchableLight _testDevice;
 
     public WhenSendingSwitchCommand(ITestOutputHelper testOutputHelper)
     {
-      _testCommandSink = new TestCommandSink();
-      _testActor = new SwitchableLight("testLight", new TestLogger(testOutputHelper), new TestDataProvider(), _testCommandSink, new DataSourceFactory());
+      _testCommandConsumer = new TestCommandConsumer();
+      _testDevice = new SwitchableLight(DeviceId, new TestLogger(testOutputHelper), new TestDataProvider(), new DataSourceFactory(), _testCommandConsumer, new CommandSinkFactory());
     }
 
     [Fact]
     public void WithBasicCommand_ShouldBeProcessedBySink()
     {
-      _testActor.SendSwitchCommand(OnOffData.ON);
+      _testDevice.SendSwitchCommand(OnOffData.ON);
 
-      _testCommandSink.LastCommand.Should().NotBeNull();
+      _testCommandConsumer.LastCommand.Should().NotBeNull();
     }
 
     [Fact]
     public void WithBasicCommand_CommandDataShouldBeCorrect()
     {
-      _testActor.SendSwitchCommand(OnOffData.ON);
+      _testDevice.SendSwitchCommand(OnOffData.ON);
 
-      _testCommandSink.LastCommand.Id.Should().EndWith(SwitchableLight.SwitchCommandId);
-      _testCommandSink.LastCommand.Data.Should().Be(OnOffData.ON);
+      _testCommandConsumer.LastCommand.Id.Should().EndWith(SwitchableLight.SwitchCommandId);
+      _testCommandConsumer.LastCommand.Data.Should().Be(OnOffData.ON);
     }
   }
 }

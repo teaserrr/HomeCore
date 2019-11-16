@@ -16,7 +16,7 @@ namespace HC.Core
 
 		public override string ToString()
 		{
-			return $"Command Id={Id} Data={Data}";
+			return $"Command [Id={Id} Data={Data}]";
 		}
 	}
 }

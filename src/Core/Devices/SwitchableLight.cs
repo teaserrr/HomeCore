@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using HC.Core.DataTypes;
 using HC.Core.Design;
 
@@ -9,10 +9,11 @@ namespace HC.Core.Devices
     public const string SwitchCommandId = "switchCommand";
     public const string StateDataSourceId = "stateDataSource";
     
-    public SwitchableLight(string id, ILog logger, IDataProvider dataProvider, ICommandSink commandSink, IDataSourceFactory dataSourceFactory)
-    : base(id, logger, commandSink, dataSourceFactory)
+    public SwitchableLight(string id, ILog logger, IDataProvider dataProvider, IDataSourceFactory dataSourceFactory, ICommandConsumer commandConsumer, ICommandSinkFactory commandSinkFactory)
+    : base(id, logger, dataSourceFactory, commandSinkFactory)
     {
       AddDataSource(StateDataSourceId, dataProvider);
+      AddCommandSink(SwitchCommandId, commandConsumer);
     }
 
     public OnOffData GetOnOffState()
@@ -22,8 +23,7 @@ namespace HC.Core.Devices
 
     public void SendSwitchCommand(OnOffData data)
     {
-      var command = new Command($"{Id}.{SwitchCommandId}", data);
-      ProcessCommand(command);
+      ProcessCommand(SwitchCommandId, data);
     }
   }
 }

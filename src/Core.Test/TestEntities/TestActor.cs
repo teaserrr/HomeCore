@@ -1,28 +1,22 @@
-using System.Collections.Generic;
-using System.Linq;
 using HC.Core.DataTypes;
 using HC.Core.Design;
+using HC.Core.Devices;
 
 namespace HC.Core.Test.TestEntities
 {
-	public class TestActor
+	public class TestActor : AbstractDevice
 	{
 		public const string CommandId = "testCommand";
-
-		private ICommandSink commandSink;
-
-		public string Id { get; private set; }
-
-		public TestActor(string id, ICommandSink commandSink)
+    
+		public TestActor(string id, ILog logger, ICommandSinkFactory commandSinkFactory, ICommandConsumer commandConsumer)
+      : base(id, logger, null, commandSinkFactory)
 		{
-			Id = id; 
-			this.commandSink = commandSink;
+      AddCommandSink(CommandId, commandConsumer);
 		}
 
 		public void SendCommand(IntegerData data)
 		{
-			var command = new Command($"{Id}.{CommandId}", data);
-			commandSink.ProcessCommand(command);
+      ProcessCommand(CommandId, data);
 		}
 	}
 }

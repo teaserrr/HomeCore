@@ -2,19 +2,21 @@ using Xunit;
 using HC.Core.Test.TestEntities;
 using HC.Core.DataTypes;
 using FluentAssertions;
+using Xunit.Abstractions;
+using HC.Core.Factories;
 
 namespace HC.Core.Test
 {
   public class WhenSendingBasicCommand
   {
-    private TestCommandSink _testCommandSink;
+    private TestCommandConsumer _testCommandConsumer;
 
     private TestActor _testActor;
 
-    public WhenSendingBasicCommand()
+    public WhenSendingBasicCommand(ITestOutputHelper testOutputHelper)
     {
-      _testCommandSink = new TestCommandSink();
-      _testActor = new TestActor("testActor", _testCommandSink);
+      _testCommandConsumer = new TestCommandConsumer();
+      _testActor = new TestActor("testActor", new TestLogger(testOutputHelper), new CommandSinkFactory(), _testCommandConsumer);
     }
 
     [Fact]
@@ -22,7 +24,7 @@ namespace HC.Core.Test
     {
       _testActor.SendCommand(new IntegerData(42));
 
-      _testCommandSink.LastCommand.Should().NotBeNull();
+      _testCommandConsumer.LastCommand.Should().NotBeNull();
     }
 
     [Fact]
@@ -30,7 +32,7 @@ namespace HC.Core.Test
     {
       _testActor.SendCommand(new IntegerData(42));
 
-      _testCommandSink.LastCommand.Data.Should().Be(new IntegerData(42));
+      _testCommandConsumer.LastCommand.Data.Should().Be(new IntegerData(42));
     }
   }
 }
