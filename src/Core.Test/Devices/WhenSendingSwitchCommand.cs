@@ -1,5 +1,6 @@
-﻿using FluentAssertions;
+﻿using FakeItEasy;
 using HC.Core.DataTypes;
+using HC.Core.Design;
 using HC.Core.Devices;
 using HC.Core.Factories;
 using Xunit;
@@ -11,14 +12,14 @@ namespace HC.Core.Test.Devices
   {
     public const string DeviceId = "testDevice";
 
-    private TestCommandConsumer _testCommandConsumer;
+    private ICommandConsumer _commandConsumer;
 
     private SwitchableLight _testDevice;
 
     public WhenSendingSwitchCommand(ITestOutputHelper testOutputHelper)
     {
-      _testCommandConsumer = new TestCommandConsumer();
-      _testDevice = new SwitchableLight(DeviceId, new TestLogger(testOutputHelper), new TestDataProvider(), new DataSourceFactory(), _testCommandConsumer, new CommandSinkFactory());
+      _commandConsumer = A.Fake<ICommandConsumer>();
+      _testDevice = new SwitchableLight(DeviceId, new TestLogger(testOutputHelper), new TestDataProvider(), new DataSourceFactory(), _commandConsumer, new CommandSinkFactory());
     }
 
     [Fact]
@@ -26,7 +27,15 @@ namespace HC.Core.Test.Devices
     {
       _testDevice.SendSwitchCommand(OnOffData.ON);
 
-      _testCommandConsumer.LastCommand.Should().NotBeNull();
+      A.CallTo(() => _commandConsumer.Consume(A<Command>._)).MustHaveHappened();
+    }
+
+    [Fact]
+    public void WithBasicCommand_CommandIdShouldBeCorrect()
+    {
+      _testDevice.SendSwitchCommand(OnOffData.ON);
+
+      A.CallTo(() => _commandConsumer.Consume(A<Command>.That.Matches(command => command.Id.Equals($"{DeviceId}.{SwitchableLight.SwitchCommandId}")))).MustHaveHappened();
     }
 
     [Fact]
@@ -34,8 +43,7 @@ namespace HC.Core.Test.Devices
     {
       _testDevice.SendSwitchCommand(OnOffData.ON);
 
-      _testCommandConsumer.LastCommand.Id.Should().EndWith(SwitchableLight.SwitchCommandId);
-      _testCommandConsumer.LastCommand.Data.Should().Be(OnOffData.ON);
+      A.CallTo(() => _commandConsumer.Consume(A<Command>.That.Matches(command => command.Data.Equals(OnOffData.ON)))).MustHaveHappened();
     }
   }
 }

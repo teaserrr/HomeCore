@@ -80,7 +80,7 @@ namespace HC.Core.Test.Logic
     {
       _dataProvider.UpdateData(DataSourceId, new IntegerData(42));
 
-      _testDataUpdateEventHandler.lastUpdateData.Should().NotBeNull();
+      _testDataUpdateEventHandler.LastUpdateData.Should().NotBeNull();
     }
 
     [Fact]
@@ -88,8 +88,8 @@ namespace HC.Core.Test.Logic
     {
       _dataProvider.UpdateData(DataSourceId, new IntegerData(42));
 
-      _testDataUpdateEventHandler.lastUpdateData.Should().Be(new IntegerData(42));
-      _testDataUpdateEventHandler.lastUpdateDataSource.Should().Be(_dataSource);
+      _testDataUpdateEventHandler.LastUpdateData.Should().Be(new IntegerData(42));
+      _testDataUpdateEventHandler.LastUpdateDataSource.Should().Be(_dataSource);
     }
   }
 }

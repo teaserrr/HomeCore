@@ -5,6 +5,8 @@ using HC.Core.Devices;
 using HC.Core.Factories;
 using FluentAssertions;
 using Xunit.Abstractions;
+using FakeItEasy;
+using HC.Core.Design;
 
 namespace HC.Core.Test.Devices
 {
@@ -20,7 +22,7 @@ namespace HC.Core.Test.Devices
     public WhenReadingSwitchableLightState(ITestOutputHelper testOutputHelper)
     {
       _dataProvider = new TestDataProvider();
-      _testDevice = new SwitchableLight(DeviceId, new TestLogger(testOutputHelper), _dataProvider, new DataSourceFactory(), new TestCommandConsumer(), new CommandSinkFactory());
+      _testDevice = new SwitchableLight(DeviceId, new TestLogger(testOutputHelper), _dataProvider, new DataSourceFactory(), A.Fake<ICommandConsumer>(), new CommandSinkFactory());
     }
 
     public OnOffData GetCurrentState()
